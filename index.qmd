@@ -1,0 +1,169 @@
+---
+title: "Victorian Car Accidents involving Pedestrians"
+format: html
+editor: visual
+---
+
+Inspired by Danny Cunningham's article [*SUVs are Killing People*](https://towardsdatascience.com/suvs-are-killing-people-de6ce08bac3d), this notebook aims to investigate accidents involving cars and pedestrians in the state of Victoria, Australia. The key question this notebook aims to investigate is: W*hat is the injury risk that different types of common passenger vehicles have on pedestrians in car accidents?*
+
+The Federal Chamber of Automotive Industries reports a uptrend of larger passenger vehicle sales in Australia. The latest [March 2023](https://www.fcai.com.au/news/index/view/news/793) report demonstrates this with SUV sales far outweighing passenger vehicle sales. [The Guardian](https://www.theguardian.com/news/datablog/2023/mar/19/suvs-are-more-popular-than-ever-in-australia-but-there-is-a-downside) also has a great visual showing the trend over the years.
+
+Public data on Victorian car accidents can be found on [*VicRoads*](https://www.vicroads.vic.gov.au/safety-and-road-rules/safety-statistics/crash-statistics) and from [*Data Vic*](https://discover.data.vic.gov.au/dataset/crash-stats-data-extract)
+
+**Loading & cleaning the crash data**
+
+We first load in the three relevant tables from the Data Vic Crash Stats dataset: Accident, Person & Vehicle. The crash statistics data ranges from January 2006 to October 2020.
+
+We will only look at car accidents involving pedestrians and cars that are labelled as 'cars', 'station wagons' and 'utility'. The data also filters for accidents with a speed limit of 70 and below to rule out data entry errors and only look at accidents on roads where pedestrians are present.
+
+As many vehicles are labelled differently as cars, station wagons or utility trucks, we will categorize the same make & model based on the most frequent label. E.g. The Toyota Hilux is labelled as a car, station wagon and utility vehicle in the *vehicle* table depending on the individual crash id. Since it is labelled as a utility vehicle more often, we will categorise it as a utility vehicle.
+
+```{r error=FALSE, warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(lubridate)
+
+accident <- read_csv("ACCIDENT.csv") %>% 
+  select(-c(DIRECTORY, EDITION, PAGE, 
+            GRID_REFERENCE_X, GRID_REFERENCE_Y, NODE_ID)) %>%
+  mutate(ACCIDENTDATE = lubridate::dmy(ACCIDENTDATE), # Parsing dates
+         SPEED_ZONE = as.numeric(SPEED_ZONE)) 
+
+person <- read_csv("PERSON.csv") %>%
+  select(-c(VEHICLE_ID, SEATING_POSITION, HELMET_BELT_WORN, EJECTED_CODE)) %>%
+  filter(ROAD_USER_TYPE == 1) # 1 being pedestrians
+
+vehicle <- read_csv("VEHICLE.csv") %>%
+  select(-c(INITIAL_DIRECTION, CONSTRUCTION_TYPE, FUEL_TYPE, FINAL_DIRECTION, TRAILER_TYPE,
+            VEHICLE_COLOUR_1, VEHICLE_COLOUR_2, CAUGHT_FIRE, LAMPS, OWNER_POSTCODE, TOWED_AWAY_FLAG)) %>%
+  mutate(Make_Model = paste(gsub(" ", "", VEHICLE_MAKE), VEHICLE_MODEL))
+
+# List of Vehicles of interest
+veh_interest <- list('Car', 'Station Wagon', 'Utility')
+
+# Creating a combined table from accident, person, vehicle
+pedestrians <- left_join(accident, person, by = 'ACCIDENT_NO') %>%
+  left_join(., vehicle, by = 'ACCIDENT_NO') %>%
+  filter(ACCIDENT_TYPE == 2,  # 2 being struck pedestrians
+         `Vehicle Type Desc` %in% veh_interest,
+         SPEED_ZONE <= 70) 
+
+# pedestrian d.f but with Vehicle Type Desc based on frequency of occurence
+p_recat <- pedestrians %>%
+  group_by(`Vehicle Type Desc`) %>%
+  summarise(n = n()) %>%
+  left_join(pedestrians, by = c("Vehicle Type Desc")) %>%
+  group_by(Make_Model) %>%
+  arrange(desc(n), .by_group = TRUE) %>%
+  mutate(`Vehicle Type Desc` = first(`Vehicle Type Desc`)) %>%
+  select(-n)
+
+p_recat
+```
+
+A quick look at the vehicle make/model and its categorisation:
+
+```{r error=FALSE, warning=FALSE, message=FALSE}
+library(reactable)
+
+make_model <- p_recat %>% group_by(Make_Model, `Vehicle Type Desc`) %>% 
+       summarise(n = n()) %>% arrange(desc(n)) %>% 
+       pivot_wider(names_from = `Vehicle Type Desc`, values_from = n)
+
+reactable::reactable(make_model)
+```
+
+**Exploring the data**
+
+Vehicle accidents involving pedestrians occur with vehicles labelled as cars more frequently. The number of crashes per vehicle type is outlined below:
+
+```{r error=FALSE, warning=FALSE, message=FALSE}
+
+inj_factor <- c("Not injured", "Other injury","Serious injury","Fatality")
+
+injury <- p_recat %>%
+  mutate(`Inj Level Desc` = factor(`Inj Level Desc`, levels=inj_factor)) %>%
+  filter(!is.na(`Inj Level Desc`)) %>%
+  select(`Vehicle Type Desc`, `Inj Level Desc`) %>%
+  group_by(`Vehicle Type Desc`, `Inj Level Desc`) %>%
+  summarise(n = n())
+
+
+injury_tbl <- injury %>%
+  pivot_wider(names_from = `Inj Level Desc`, values_from = n) %>%
+  rowwise() %>%
+  mutate(sum = sum(c_across(where(is.numeric)), na.rm = T)) %>%
+  ungroup() %>%
+  arrange(desc(sum))
+
+injury_tbl
+
+```
+
+```{r error=FALSE, warning=FALSE, message=FALSE}
+library(plotly)
+
+injury_bar <- injury %>% ggplot(aes(x = `Vehicle Type Desc`, y = n, fill = `Inj Level Desc`)) +
+  geom_col(position = "fill") + ylab("proportion")
+
+
+plotly::ggplotly(injury_bar)
+
+```
+
+Linear regression estimating the effect of vehicle types, vehicle manufacture year & speed limit on pedestrian fatalities:
+
+```{r error=FALSE, warning=FALSE, message=FALSE}
+model_df <- p_recat %>%
+  select(ACCIDENT_NO, VEHICLE_MAKE, VEHICLE_MODEL, Make_Model, `Vehicle Type Desc`,
+         VEHICLE_BODY_STYLE ,`Inj Level Desc`, INJ_LEVEL, TARE_WEIGHT, SPEED_ZONE,
+         `Light Condition Desc`, VEHICLE_YEAR_MANUF) %>%
+  mutate(is_station_wagon = ifelse(`Vehicle Type Desc` == 'Station Wagon', TRUE, FALSE),
+         is_utility = ifelse(`Vehicle Type Desc` == 'Utility', TRUE, FALSE),
+         is_car = ifelse(`Vehicle Type Desc` == 'Car', TRUE, FALSE),
+         is_fatal = ifelse(INJ_LEVEL == 1, TRUE, FALSE),
+         is_serious_injury = ifelse(INJ_LEVEL == 2, TRUE, FALSE)) 
+
+# Checking Station Wagon Categorisation
+model_df %>% filter(`Vehicle Type Desc` == 'Station Wagon') %>% group_by(Make_Model) %>% summarise(n = n()) %>% arrange(desc(n))
+
+lm_fatal <- lm(is_fatal ~ `Vehicle Type Desc` + SPEED_ZONE, data = model_df)
+summary(lm_fatal)
+
+```
+
+Linear regression estimating the effect of vehicle types, vehicle manufacture year & speed limit on pedestrian serious injuries:
+
+```{r error=FALSE, warning=FALSE, message=FALSE}
+lm_serious <- lm(is_serious_injury ~ `Vehicle Type Desc` + SPEED_ZONE, data = model_df)
+summary(lm_serious)
+```
+
+**Findings**
+
+[Pedestrian fatalities:]{.underline}
+
+The linear regression estimates that station wagons have a statistically significant effect (p \< 0.05) in pedestrian fatalities. The linear model estimates that station wagons add an additional 1.12% risk of fatality to pedestrians compared to the cars. The effect of utility vehicles is not significant, thus it is inconclusive whether utility vehicles have any effect of pedestrian fatalities compared to cars.
+
+To see the make and models of station wagons/utility vehicles, please refer to the make and model table above in which you are able to sort for station wagons/utility vehicle by clicking on the column headers.
+
+The model also estimates a positive significant effect of the speed zone (speed limit) and vehicle manufactured date on fatalities.
+
+[Pedestrian serious injuries:]{.underline}
+
+The linear regression estimates that both station wagons and utility vehicles have no significant effect on pedestrians in crashes where the pedestrian is considered seriously injured.
+
+Similarly to the fatality model, this model also estimates significant positive effects on the speed zone and vehicle manufactured date on fatalities.
+
+**Summary**
+
+The linear model estimates station wagons increase the risk of fatality by 1.12% compared to cars, which may seem small, however when we see the shift towards SUVs and larger vehicles in Australia, it may result in more pedestrian deaths.
+
+The date currently has cars outweighing station wagons in the number of accidents involving pedestrians (Note: The vehicles listed in the data as station wagon are mainly SUVs - see Make Model table). However we may see this shift to station wagons being more frequently involved in pedestrian accidents.
+
+Could the shift in consumer demand towards larger vehicles sacrifice pedestrian safety for driver/passenger safety in Victoria?
+
+Key Constraint:
+
+Vehicle descriptions are reliant on data inputted in the individual crash report. This may mean vehicles descriptions may vary across different reports and also vehicle descriptions evolve over time due to shifts in the car industry (e.g. Station Wagons in the 2000s may refer to cars more like the Holden Commodore Wagon, where as in the 2010s it may refer to cars more like Toyota RAV 4).\
+This constraint is addressed by categorising vehicles based on the frequency of their label per make and model.

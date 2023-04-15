@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>VicCrash - Victorian Car Accidents involving Pedestrians</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="site_libs/react-17.0.0/react.min.js"></script>
+<script src="site_libs/react-17.0.0/react-dom.min.js"></script>
+<script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+<script src="site_libs/reactable-binding-0.4.4/reactable.js"></script>
+<script src="site_libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">VicCrash</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Victorian Car Accidents involving Pedestrians</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Inspired by Danny Cunningham’s article <a href="https://towardsdatascience.com/suvs-are-killing-people-de6ce08bac3d"><em>SUVs are Killing People</em></a>, this notebook aims to investigate accidents involving cars and pedestrians in the state of Victoria, Australia. The key question this notebook aims to investigate is: W<em>hat is the injury risk that different types of common passenger vehicles have on pedestrians in car accidents?</em></p>
+<p>The Federal Chamber of Automotive Industries reports a uptrend of larger passenger vehicle sales in Australia. The latest <a href="https://www.fcai.com.au/news/index/view/news/793">March 2023</a> report demonstrates this with SUV sales far outweighing passenger vehicle sales. <a href="https://www.theguardian.com/news/datablog/2023/mar/19/suvs-are-more-popular-than-ever-in-australia-but-there-is-a-downside">The Guardian</a> also has a great visual showing the trend over the years.</p>
+<p>Public data on Victorian car accidents can be found on <a href="https://www.vicroads.vic.gov.au/safety-and-road-rules/safety-statistics/crash-statistics"><em>VicRoads</em></a> and from <a href="https://discover.data.vic.gov.au/dataset/crash-stats-data-extract"><em>Data Vic</em></a></p>
+<p><strong>Loading &amp; cleaning the crash data</strong></p>
+<p>We first load in the three relevant tables from the Data Vic Crash Stats dataset: Accident, Person &amp; Vehicle. The crash statistics data ranges from January 2006 to October 2020.</p>
+<p>We will only look at car accidents involving pedestrians and cars that are labelled as ‘cars’, ‘station wagons’ and ‘utility’. The data also filters for accidents with a speed limit of 70 and below to rule out data entry errors and only look at accidents on roads where pedestrians are present.</p>
+<p>As many vehicles are labelled differently as cars, station wagons or utility trucks, we will categorize the same make &amp; model based on the most frequent label. E.g. The Toyota Hilux is labelled as a car, station wagon and utility vehicle in the <em>vehicle</em> table depending on the individual crash id. Since it is labelled as a utility vehicle more often, we will categorise it as a utility vehicle.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>accident <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ACCIDENT.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(DIRECTORY, EDITION, PAGE, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            GRID_REFERENCE_X, GRID_REFERENCE_Y, NODE_ID)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ACCIDENTDATE =</span> lubridate<span class="sc">::</span><span class="fu">dmy</span>(ACCIDENTDATE), <span class="co"># Parsing dates</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">SPEED_ZONE =</span> <span class="fu">as.numeric</span>(SPEED_ZONE)) </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>person <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"PERSON.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(VEHICLE_ID, SEATING_POSITION, HELMET_BELT_WORN, EJECTED_CODE)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ROAD_USER_TYPE <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># 1 being pedestrians</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>vehicle <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"VEHICLE.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(INITIAL_DIRECTION, CONSTRUCTION_TYPE, FUEL_TYPE, FINAL_DIRECTION, TRAILER_TYPE,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            VEHICLE_COLOUR_1, VEHICLE_COLOUR_2, CAUGHT_FIRE, LAMPS, OWNER_POSTCODE, TOWED_AWAY_FLAG)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Make_Model =</span> <span class="fu">paste</span>(<span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">""</span>, VEHICLE_MAKE), VEHICLE_MODEL))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># List of Vehicles of interest</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>veh_interest <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">'Car'</span>, <span class="st">'Station Wagon'</span>, <span class="st">'Utility'</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a combined table from accident, person, vehicle</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>pedestrians <span class="ot">&lt;-</span> <span class="fu">left_join</span>(accident, person, <span class="at">by =</span> <span class="st">'ACCIDENT_NO'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., vehicle, <span class="at">by =</span> <span class="st">'ACCIDENT_NO'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ACCIDENT_TYPE <span class="sc">==</span> <span class="dv">2</span>,  <span class="co"># 2 being struck pedestrians</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span> <span class="sc">%in%</span> veh_interest,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>         SPEED_ZONE <span class="sc">&lt;=</span> <span class="dv">70</span>) </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># pedestrian d.f but with Vehicle Type Desc based on frequency of occurence</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>p_recat <span class="ot">&lt;-</span> pedestrians <span class="sc">%&gt;%</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(pedestrians, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Vehicle Type Desc"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Make_Model) <span class="sc">%&gt;%</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n), <span class="at">.by_group =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">first</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>n)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>p_recat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 14,016 × 61
+# Groups:   Make_Model [1,558]
+   Vehicle …¹ ACCID…² ACCIDENT…³ ACCID…⁴ ACCID…⁵ Accid…⁶ DAY_O…⁷ Day W…⁸ DCA_C…⁹
+   &lt;chr&gt;      &lt;chr&gt;   &lt;date&gt;     &lt;time&gt;    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
+ 1 Car        T20180… 2018-04-28 21:40         2 Struck…       7 Saturd…     100
+ 2 Utility    T20180… 2018-01-08 21:47         2 Struck…       2 Monday      102
+ 3 Car        T20070… 2006-12-16 17:00         2 Struck…       7 Saturd…     100
+ 4 Car        T20110… 2011-04-28 17:20         2 Struck…       5 Thursd…     102
+ 5 Car        T20160… 2016-08-20 21:45         2 Struck…       7 Saturd…     100
+ 6 Car        T20110… 2011-12-13 12:35         2 Struck…       3 Tuesday     100
+ 7 Car        T20080… 2008-09-04 15:40         2 Struck…       5 Thursd…     107
+ 8 Car        T20090… 2009-03-24 10:00         2 Struck…       3 Tuesday     100
+ 9 Car        T20100… 2010-09-11 17:10         2 Struck…       7 Saturd…     103
+10 Car        T20110… 2011-06-25 10:08         2 Struck…       7 Saturd…     102
+# … with 14,006 more rows, 52 more variables: `DCA Description` &lt;chr&gt;,
+#   LIGHT_CONDITION &lt;dbl&gt;, `Light Condition Desc` &lt;chr&gt;, NO_OF_VEHICLES &lt;dbl&gt;,
+#   NO_PERSONS &lt;dbl&gt;, NO_PERSONS_INJ_2 &lt;dbl&gt;, NO_PERSONS_INJ_3 &lt;dbl&gt;,
+#   NO_PERSONS_KILLED &lt;dbl&gt;, NO_PERSONS_NOT_INJ &lt;dbl&gt;, POLICE_ATTEND &lt;dbl&gt;,
+#   ROAD_GEOMETRY &lt;dbl&gt;, `Road Geometry Desc` &lt;chr&gt;, SEVERITY &lt;dbl&gt;,
+#   SPEED_ZONE &lt;dbl&gt;, PERSON_ID &lt;chr&gt;, SEX &lt;chr&gt;, AGE &lt;dbl&gt;, `Age Group` &lt;chr&gt;,
+#   INJ_LEVEL &lt;dbl&gt;, `Inj Level Desc` &lt;chr&gt;, ROAD_USER_TYPE &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
+<p>A quick look at the vehicle make/model and its categorisation:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>make_model <span class="ot">&lt;-</span> p_recat <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Make_Model, <span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span>, <span class="at">values_from =</span> n)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>reactable<span class="sc">::</span><span class="fu">reactable</span>(make_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="htmlwidget-2b26261f260de7c4b632" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2b26261f260de7c4b632">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Make_Model":["HOLDEN COMMOD","FORD FALCON","TOYOTA CAMRY","TOYOTA COROLL","UNKN NA","MITSUB MAGNA","HOLDEN ASTRA","MITSUB LANCER","TOYOTA HILUX","HONDA CIVIC","MAZDA 3","NISSAN PULSAR","FORD TERRIT","FORD LASER","TOYOTA YARIS","TOYOTA RAV4","HONDA ACCORD","VOLKS GOLF","HOLDEN BARINA","HYNDAI EXCEL","HONDA JAZZ","NISSAN NAVARA","TOYOTA KLUGER","FORD FOCUS","TOYOTA NA","HOLDEN RODEO","HONDA CRV","FORD FAIRMO","NISSAN PATROL","TOYOTA PRADO","HOLDEN CALAIS","HOLDEN CRUZE","SUBARU FOREST","FORD FUTURA","HOLDEN NA","HYNDAI I30","MITSUB TRITON","MITSUB PAJERO","MAZDA 6","HYNDAI GETZ","KIA RIO","NISSAN XTRAIL","SUBARU IMPREZ","FORD FIESTA","FORD FORTE","SUBARU LIBERT","TOYOTA AURION","TOYOTA ECHO","HOLDEN BERLIN","MAZDA 2","TOYOTA LANDCR","FORD NA","SUBARU OUTBAC","HOLDEN COMM","TOYOTA TARAGO","HYNDAI ELANTR","FORD RANGER","SUZUKI SWIFT","HYNDAI ACCENT","NISSAN MAXIMA","MAZDA 626","HOLDEN CAPTIV","MAZDA 323","FORD FESTIV","HOLDEN ACCLAI","HOLDEN VECTRA","TOYOTA COROLA","HOLDEN VF","MITSUB OUTLAN","AUDI A4","TOYOTA AVALON","FORD XR6","HOLDEN OMEGA","HONDA ODYSSE","MITSUB VERADA","BMW 318I","FORD FAIRLA","NISSAN NA","DAEWOO LANOS","MAZDA 3 NEO","BMW X5","HYNDAI TUCSON","MITSUB MIRAGE","NISSAN TIIDA","HYNDAI IX35","NISSAN MICRA","VOLKS PASSAT","NISSAN DUALIS","HOLDEN COMMO","KIA SPORTA","MAZDA ASTINA","FORD MONDEO","HYNDAI I20","JEEP CHEROK","VOLKS POLO","VOLKS TIGUAN","HOLDEN STATES","HONDA PRELUD","MAZDA 121","MAZDA CX7","MITSUB 380","TOYOTA CELICA","KIA CARNIV","KIA CERATO","MITSUB ASX","FORD TELSTA","HOLDEN COLORA","HONDA CR-V","HONDA INTEGR","MAZDA CX9","MITSUB NA","NISSAN X-TRAI","TOYOTA PRIUS","FORD COURIE","HOLDEN CPTIVA","LROV DISCOV","MAZDA TRIBUT","AUDI Q5","BMW 320I","NISSAN PATHFI","HOLDEN STAT M","MERCB C180","MERCB C200","MERCB ML320","NISSAN MURANO","FORD ESCAPE","HOLDEN VIVA","MAZDA CX-5","MAZDA NA","SUZUKI VITARA","TOYOTA COROL","HYNDAI LANTRA","MERCB NA","NISSAN SKYLIN","HYNDAI NA","JEEP COMPAS","SUBARU NA","VOLKS JETTA","VOLVO XC90","LEXUS IS250","MAZDA B2600","SUBARU XV","HONDA NA","HYNDAI SONATA","MAZDA 2 NEO","REN MEGANE","TOYOTA RAV 4","HOLDEN VE","JEEP WRANGL","MAZDA MAZDA6","MAZDA PROTEG","PEUG 308","SUZUKI SX4","TOYOTA LEXCEN","BMW 323I","BMW 325I","DAEWOO NUBIRA","FORD FALCO","HOLDEN CAPRIC","HOLDEN CREWMA","HOLDEN SV6","HONDA EURO","JEEP GRDCHK","LEXUS RX350","MAZDA MAZDA3","REN SCENIC","VOLVO S40","CHRYS 300C","DAIHAT CHARAD","HOLDEN APOLLO","HOLDEN EXECUT","AUDI A3","BMW X3","HOLDEN C/DORE","HOLDEN ZAFIRA","HONDA CITY","HONDA HRV","JEEP PATRIO","LEXUS IS200","MAZDA 3 MAXX","MAZDA BT50","MITSUB COLT","NISSAN QASHQA","REN CLIO","DAIHAT TERIOS","HOLDEN C'DORE","HOLDEN VS","KIA SPTAGE","MAZDA CX3","MAZDA MX5","MERCB C200K","MERCB C250","MERCB ML350","PEUG 307XS","TOYOTA STARLE","UNKN UNKNOW","CITRN C4","FORD EXPLOR","HOLDEN CAMIRA","HOLDEN JACKAR","HYNDAI ELNTRA","HYNDAI VELOST","MERCB C180K","MERCB CLK320","NISSAN PINTAR","PEUG 307","REN KOLEOS","TOYOTA VIENTA","VOLKS BEETLE","VOLKS TOUARE","VOLVO NA","AUDI A1","AUDI Q7","BMW 320D","DAIHAT SIRION","HOLDEN GEMINI","HOLDEN MONARO","HOLDEN NOVA","HOLDEN VSPC96","HOLDEN VT","HOLDEN VT COM","KIA SORENT","LEXUS ES300","MAZDA 3NEO","MAZDA CX5","MERCB A160","MERCB E240","MERCB MCLASS","MITSUB CHALLE","SAAB 93","TOYOTA AVENSI","TOYOTA LAND C","TOYOTA LCRUIS","UNKN EXCEL","VOLVO XC60","ALFAR 156","AUDI A6","BMW 525I","BMW NA","CHRYS NEON","CHRYS VOYAGE","FORD AU","FORD XL","HOLDEN ADVENT","HOLDEN C DORE","HOLDEN CAPTVA","HOLDEN TRAX","HOLDEN VE COM","HOLDEN VE SV6","HOLDEN VTPC97","HONDA MDX","HYNDAI SANTAF","ISUZU DMAX","MAZDA 929","MAZDA BRAVO","MAZDA MAZD3","MMOVE COOPER","NISSAN 200SX","SUBARU TRIBEC","SUZUKI IGNIS","TOYOTA SECA","UNKN SEDAN","VOLKS BORA","AUDI NA","BMW 325CI","CHRYS NA","CITRN C3","CITRN C5","DAEWOO CIELO","FORD EL96A","FORD F100","FORD F250","FORD FAIRMT","FORD KUGA","FORD LTD","FORD XF","HOLDEN CALIBR","HOLDEN HOLDEN","HOLDEN VN COM","HOLDEN VTPC99","LEXUS RX330","LROV DISCO","LROV FREELA","MAZDA 3 SP25","MAZDA 3MAXX","MERCB B180","MERCB B200","MERCB E280","PEUG 206","SUBARU WRX","SUZUKI ALTO","SUZUKI BALENO","SUZUKI XL7","TOYOTA L/CRUI","UNKN X5","VOLKS AMAROK","VOLKS EOS","VOLVO S60","VOLVO XC70","AUDI TT","BMW M3","DAEWOO LEGANZ","DATSUN NA","DODGE JOURNY","FORD CORSAI","FORD EA","FORD EL","FORD EVERES","FORD FALXR6","FORD XR8","HOLDEN COMDOR","HOLDEN EXEC","HOLDEN FRONTE","HOLDEN LUMINA","HOLDEN MALOO","HOLDEN SEDAN","HOLDEN UTE","HOLDEN VS COM","HOLDEN VZ","HYNDAI I40","HYNDAI I45","HYNDAI SNTAFE","JEEP GRAND","KIA MENTOR","KIA NA","KIA SPECTR","LEXUS GS300","LROV TDV6","MAZDA CX-7","MAZDA CX-9","MAZDA MAZDA2","MAZDA METRO","MAZDA MX6","MAZDA RX8","MERCB CLA250","MERCB E350","MERCB SLK200","NISSAN 180SX","NISSAN 300ZX","NISSAN SILVIA","NISSAN SKYLNE","PEUG 306XT","PEUG 308XSE","PEUG 407","PORSCH CAYENN","SUZUKI GRAND","TOYOTA CORONA","TOYOTA CRESSI","UNKN U/K","VOLVO V40","ALFAR 147","ALFAR GIULIE","AUDI 80","AUDI ALLROA","AUDI Q3","BMW 116I","BMW 120I","BMW 320CI","BMW 323","BMW 325","BMW 328I","BMW 330CI","BMW 525","BMW 530I","BMW 650I","DAEWOO MATIZ","DAEWOO TACUMA","DAIHAT APPLAU","FORD EF95A","FORD EL97A","FORD F MONT","FORD FAIR","FORD FAIRLN","FORD FALCXT","FORD FG","FORD FG XT","FORD FMONT","FORD G6","FORD GS","FORD KA","FORD MAVERI","FORD TX5","FORD UTE","HOLDEN CLUBSP","HOLDEN EPICA","HOLDEN EVOKE","HOLDEN S PACK","HOLDEN SPARK","HOLDEN SSV","HOLDEN VE SS","HOLDEN VL","HOLDEN VL COM","HOLDEN VR","HOLDEN VSPC95","HYNDAI FD I30","HYNDAI SANTA","LEX RX350","LEXUS NA","LEXUS RX270","MAZDA 2 GENK","MAZDA 2 MAXX","MAZDA 3 SP","MAZDA 3 TOUR","MAZDA B2500","MAZDA PREMAC","MERCB 190E","MERCB 300D","MERCB A250","MERCB C220","MERCB CLK240","MERCB E220","MERCB E250","MERCB E320","MERCB GLE350","MERCB ML500","MERCB ML63","MERCB SLK230","MERCB VITO","MITSUB CJ","MITSUB EXECUT","MITSUB LANCE","MITSUB NIMBUS","MITSUB T/K","NISSAN EXA","NISSAN NX","PEUG 207","PEUG 207XT","PEUG 307XSE","PORSCH 911","REN LAGUNA","RROV EVOQUE","RROV NA","SUBARU IMPR93","SUBARU IMPRZA","SUZUKI LIANA","TOYOTA 86","TOYOTA CAMR94","TOYOTA CORLLA","TOYOTA CORO94","TOYOTA ESTIMA","TOYOTA HJ60","TOYOTA LC200","TOYOTA MR2","TOYOTA RAV","TOYOTA TOWNAC","UNKN 4WD","UNKN ACCENT","UNKN FORD","UNKN ML320","UNKN UTE","VLK POLO","VOLKS MULTIV","VOLKS NA","VOLVO C30","VOLVO C70","VOLVO V70","ALFAR NA","ALFAR SPIDER","AUDI A520TQ","AUDI SQ5","AUDI TTRS","BMW 118I","BMW 120","BMW 123D","BMW 320","BMW 323A","BMW 328CI","BMW 330I","BMW 335I","BMW 3SER","BMW 520I","BMW 530","BMW 740LI","BMW X3 20D","BMW X5 3.0","BMW X5 4.8","BMW X6 50I","CHRYS CHEROK","DAEWOO LEGA98","DAIHAT CENTRO","DAIHAT CHA","DODGE CALIBR","DODGE NITRO","EUNOS 30X","FORD BA","FORD CAPRI","FORD EB","FORD EF","FORD F/MONT","FORD FAIRMN","FORD FAL","FORD Falcon","FORD FG XR6","FORD FLACON","FORD Ford","FORD G6E","FORD LAZER","FORD LONGRE","FORD MAVERK","FORD MONDE","FORD PROBE","FORD RAIDER","FORD T/TORY","FORD TAURUS","FORD TERRI","FORD TRANSI","FORD WB FES","GWA V200","HOLDEN 8VY","HOLDEN AH05B","HOLDEN COM","HOLDEN COMMD","HOLDEN EQUIPE","HOLDEN INTERN","HOLDEN OCMMOD","HOLDEN OMMOD","HOLDEN SS","HOLDEN SS V","HOLDEN SV6Z","HOLDEN TJ","HOLDEN VP","HOLDEN VPCOMM","HOLDEN VR/VS","HOLDEN VSCOMM","HOLDEN VTEXEC","HOLDEN VU","HOLDEN VX P/C","HOLDEN VX00A","HOLDEN VZ COM","HOLDEN W B","HONDA ACC EU","HONDA CONCER","HONDA LEGEND","HONDA ODYSEY","HYNDAI ACCEN","HYNDAI COUPE","HYNDAI EXCELL","HYNDAI IMAX","HYNDAI SCOUPE","HYNDAI TERRAC","HYU I20","HYU IX35","HYUNDA GETZ","JEEP CHEKOK","JEEP PTRIOT","KIA OPTIMA","KIA RONDO","KIA SPORT","LEXUS 1S200","LEXUS IS","LROV DISC4","LROV EVOQUE","LROV R ROV","LROV RREVOQ","LROV TD4","MASER GHIBLI","MAZDA 12193A","MAZDA 3 MAXS","MAZDA 3/6","MAZDA 6 LUX","MAZDA 6 TOUR","MAZDA BT-50","MAZDA CX-3","MAZDA MPV","MAZDA MZ3","MERCB 180E","MERCB 260E","MERCB 300E","MERCB A190L","MERCB C200E","MERCB C280E","MERCB C350","MERCB CLC200","MERCB CLK280","MERCB CLK500","MERCB E200","MERCB E220SE","MERCB E230","MERCB E240E","MERCB E270","MERCB E320E","MERCB E430","MERCB GL320","MERCB GLA45","MERCB ML","MERCB ML250","MERCB ML270","MERCB ML300","MERCB SL350","MITSUB 380VRX","MITSUB ALTERA","MITSUB CH","MITSUB EXPRES","MITSUB MAG","MITSUB STARWA","MITSUB TL","MITSUB ZG","MMOVE COOPE","MMOVE MINI","NISSAN 350Z","NISSAN ALMERA","NISSAN ELGRND","NISSAN PAT","NISSAN PAT92G","NISSAN PFINDE","NISSAN S/LINE","NISSAN STAGEA","NISSAN VECTOR","NISSAN X TRAI","OPEL PJ","PEUG 206 CC","PEUG 206CC","PEUG 206XR","PEUG 206XT","PEUG 306","PEUG 306ST","PEUG 4008","PEUG 508","PORSCH 996","PORSCH MACAN","PROTON JUMBUC","PROTON PERSON","PROTON SATRIA","PROTON SAVVY","RROV HSE","RROV SPORT","SAAB 9-3","SAAB 9000","SAAB 9000CS","SSANGY ACTYON","SSANGY KORAND","STAT NA","SUBARU B3A00A","SUBARU FORSTR","SUBARU LI","SUBARU OUTBA","SUBARU OUTBCK","SUBARU S98A","SUZUKI CINO","SUZUKI GADVIT","SUZUKI NA","SUZUKI SIERRA","TOYOTA 00245","TOYOTA 4RUNNE","TOYOTA 4X4","TOYOTA CAM","TOYOTA CAMARY","TOYOTA CAMR97","TOYOTA CELI","TOYOTA CMARY","TOYOTA CROLA","TOYOTA FJ","TOYOTA HI LUX","TOYOTA HIACE","TOYOTA HILU 1","TOYOTA L CRUI","TOYOTA LAND00","TOYOTA LAND92","TOYOTA LANDC","TOYOTA PASEO","TOYOTA PRIUSC","TOYOTA RAV406","TOYOTA RUKUS","TOYOTA RUNNER","TOYOTA SUPRA","UNKN 525E","UNKN CLIO","UNKN I30","UNKN TUCSON","UNSPEC NA","VLK AMAROK","VOLKS CADDY","VOLKS GTI","VOLKS TOUREG","VOLKS TRANSP","VOLKS TYPE98","VOLVO 740","VOLVO 850","VOLVO 850GLE","VOLVO S80","VOLVO V50","ABARTH ABARTH","ADLER NA","ALFAR 14701A","ALFAR 159","ALFAR 166","ALFAR 33","ALFAR ALFA75","ALFAR GIULIA","ALFAR GT","ALFAR GUILI","AUDI 4","AUDI 4B","AUDI 4B01A","AUDI 802.6","AUDI 90","AUDI A3 1.8","AUDI A4 2.6","AUDI A41.8T","AUDI A420","AUDI A420TQ","AUDI A5","AUDI A5 3.0","AUDI A6 2.0","AUDI ALROAD","AUDI AVANT","AUDI Q7 3.0","AUDI RS4","AUDI S3","AUDI TT RDS","AUDI TT06A","AUDI WAGON","B.M. 318I S","B.M. 325I C","B.M. E90","B.M.W. 325CI","BENT GT","BMW 116","BMW 123","BMW 125","BMW 135","BMW 220D","BMW 220I","BMW 316I","BMW 316TI","BMW 318","BMW 3181","BMW 318IA","BMW 318IA4","BMW 318IS","BMW 318TI","BMW 320 T","BMW 3231 C","BMW 325-90","BMW 330","BMW 330IC","BMW 335","BMW 3SER92","BMW 3SER96","BMW 3SER98","BMW 428I","BMW 520D","BMW 523I","BMW 528","BMW 528I","BMW 528IA","BMW 530D","BMW 535I","BMW 540IA","BMW 645CI","BMW 730IAL","BMW 730IL","BMW 735IL","BMW 745I","BMW E53","BMW I3","BMW M135I","BMW S40","BMW UNK","BMW X1","BMW X3 20I","BMW X3 30I","BMW X5 4.4","BMW X530D","BMW X6","BMW X6 35I","BMW Z4","CFMOT 650NK","CHERY J11","CHEV BELAIR","CHEV IMPALA","CHEV LUV","CHEV SSR","CHEV SUBURB","CHRYS 300CSR","CHRYS 300LX","CHRYS 300S","CHRYS JEEP","CHRYS LAREDO","CHRYS NEON96","CHRYS PT","CHRYS PT CRU","CHRYS RENEGA","CHRYS SIGMA","CHRYS VJ","CITRN C2","CITRN C2 VTR","CITRN C5V6","CITRN DS3","CITRN XSARA","DAEWOO 5DOOR","DAEWOO CELO","DAEWOO ESPERO","DAEWOO KALOS","DAEWOO NA","DAEWOO NUBI99","DAEWOO NUBIA","DAIHAT 00020","DAIHAT AIHAT6","DAIHAT CHARRA","DAIHAT FEROZA","DAIHAT L700S","DAIHAT PYZAR","DAIHAT ROCKY","DATSUN 120Y","DATSUN 280C","DODGE AVENGR","DODGE CALIBE","DODGE JORNEY","EUNOS 50092A","EUNOS 800M","FERRAR FOCUS","FIAT 124 SP","FIAT 500","FIAT 500X","FIAT ABARTH","FIAT FREEMO","FIAT FREMNT","FIAT NA","FIAT POP","FIAT PUNTO","FIAT RITMO","FORD 00001","FORD 01457","FORD 14155","FORD 16521","FORD AU FAL","FORD AU00D","FORD AU00F","FORD AU98A","FORD AU98C","FORD AVOOC","FORD BA XR6","FORD BA XT","FORD BA02A","FORD BA04E","FORD BAFALC","FORD BARRA","FORD BF","FORD BF06J","FORD COMMER","FORD CORTIN","FORD COUR","FORD COUR98","FORD COURIR","FORD EA FAL","FORD EB FAI","FORD EB FAL","FORD EB GLI","FORD ECONOV","FORD ECOSPO","FORD ED","FORD ED FAL","FORD EF FUT","FORD EL FAI","FORD EL FAL","FORD ESCORT","FORD F-100","FORD F LANE","FORD F/LANE","FORD FAIMON","FORD FAIRL","FORD FAIRM","FORD FALC0N","FORD FALC86","FORD FALC92","FORD FALC94","FORD FALCG6","FORD falcon","FORD FEST97","FORD FESTIA","FORD FESTVI","FORD FG CAB","FORD FG G6E","FORD FG XR","FORD FORD","FORD FOTUNA","FORD FRMNT","FORD GHIA","FORD KF LAS","FORD LASCIL","FORD Laser","FORD LNGRCH","FORD MAV","FORD MUST68","FORD MUSTAN","FORD NF95A","FORD PASSEN","FORD s","FORD SUV","FORD T'TORY","FORD TAXI","FORD TELSTR","FORD TERITO","FORD TERRTY","FORD TYPHOO","FORD U/K","FORD UNKNOW","FORD UTILIT","FORD WAGON","FORD XF FAL","FORD XL FAL","FORD XR SSB","GREA K2 SER","GWA NA","GWA V240","GWA X200","GWALL STEED","GWALL V200","GWALL X240","HINO NA","HOLDEN 00275","HOLDEN 00286","HOLDEN 12/200","HOLDEN 8VK","HOLDEN 8VK19","HOLDEN 8VK35","HOLDEN ACCALI","HOLDEN ACLAIM","HOLDEN ADVNTR","HOLDEN ADVTRA","HOLDEN APOO","HOLDEN BARI N","HOLDEN BARIN","HOLDEN BARSPK","HOLDEN BELINA","HOLDEN BERLNA","HOLDEN CALAI","HOLDEN CAPT06","HOLDEN CGF","HOLDEN CHASSI","HOLDEN COLORO","HOLDEN COM V","HOLDEN COMM90","HOLDEN COMMDR","HOLDEN COMMER","HOLDEN COMMMO","HOLDEN commod","HOLDEN COMMON","HOLDEN COMMOR","HOLDEN COMODE","HOLDEN COMODO","HOLDEN CPMMOD","HOLDEN CREWM","HOLDEN ESTEEM","HOLDEN EXE","HOLDEN EXECU","HOLDEN FJ","HOLDEN FNTERA","HOLDEN GIROD","HOLDEN GTS","HOLDEN HJ","HOLDEN HQ","HOLDEN HSV","HOLDEN HX","HOLDEN JACKRO","HOLDEN JG","HOLDEN JH","HOLDEN K897A","HOLDEN KINGS","HOLDEN KINGWO","HOLDEN LXCAPT","HOLDEN MALIBU","HOLDEN MALLOO","HOLDEN OLYMPI","HOLDEN PJ","HOLDEN RODO88","HOLDEN S'MAN","HOLDEN S MAN","HOLDEN S PAK","HOLDEN S/MAN","HOLDEN SB","HOLDEN SLR69","HOLDEN SONATA","HOLDEN SS THU","HOLDEN ST MAN","HOLDEN STATE","HOLDEN STATEM","HOLDEN STATM","HOLDEN STATSE","HOLDEN SVZ","HOLDEN SWAGON","HOLDEN TS00B","HOLDEN TS00C","HOLDEN VE P/C","HOLDEN VE06D","HOLDEN VE2","HOLDEN VECTR","HOLDEN VF SSV","HOLDEN VH","HOLDEN VK","HOLDEN VL VK","HOLDEN VLCOMM","HOLDEN VN","HOLDEN VNCALA","HOLDEN VNEXEC","HOLDEN VQ","HOLDEN VR COM","HOLDEN VR EXE","HOLDEN VR P/C","HOLDEN VRPC93","HOLDEN VS P/C","HOLDEN VSEXC","HOLDEN VSEXEC","HOLDEN VSUT95","HOLDEN VX 3.8","HOLDEN VX00B","HOLDEN VY","HOLDEN VY 3.8","HOLDEN VY COM","HOLDEN VZ-SV6","HOLDEN VZ04A","HOLDEN VZ06J","HOLDEN WB","HOLDEN WH99A","HOLDEN WHP/00","HOLDEN WM","HONDA ACCO97","HONDA AEULXN","HONDA CIIC","HONDA CIVI95","HONDA CON","HONDA CR-Z","HONDA CRV04A","HONDA CRVAL","HONDA CRX","HONDA HR-V","HONDA HRV99B","HONDA INSIGH","HONDA INTEG","HONDA JA3GLI","HONDA jazz","HONDA JAZZ 4","HONDA ODY","HONDA ODYSS","HONDA ODYSSY","HONDA PREL91","HONDA PRELDE","HONDA PRELU","HONDA S2000","HONDA TYPER","HYND EXCEL","HYND GETZ","HYND I30","HYND IMAX","HYND SONATA","HYND VELOST","HYNDAI ACCE00","HYNDAI ACCE05","HYNDAI COUP96","HYNDAI EXCE97","HYNDAI EXECL","HYNDAI FX","HYNDAI GETS","HYNDAI GRANDE","HYNDAI H-1","HYNDAI I30SLX","HYNDAI ILOAD","HYNDAI S","HYNDAI SANTFE","HYNDAI SPRINT","HYNDAI TIBURO","HYNDAI XL","HYU I30","INFNTI V36G","INTERN SCOU78","ISUZU MU-X","ISUZU MUX","ISUZU NPR250","ISUZU NPR45","JAGUAR MK 5","JAGUAR S TYPE","JAGUAR X 2.1","JAGUAR X TYPE","JAGUAR XE","JAGUAR XF","JAGUAR XJ6","JAGUAR XJR","JAGUAR XJS","JEEP CHERO","JEEP CHROKE","JEEP COMPSS","JEEP CRDCHK","JEEP GRANDC","JEEP GRDCHE","JEEP LAREDO","JEEP MK","JEEP NA","JEEP RENEGA","KIA CANIVA","KIA CARENS","KIA CARNVL","KIA KARNIV","KIA KM SER","KIA mentor","KIA PICANT","KIA PREGIO","KIA PROCEE","KIA SORNTO","KIA SORREN","KIA SPOAGE","LAN RR SPO","LEXUS CT200H","LEXUS ES300H","LEXUS GS","LEXUS IS200T","LEXUS IS250C","LEXUS IS300","LEXUS IS350","LEXUS ISF","LEXUS LS400","LEXUS LX470","LEXUS NX300H","LEXUS RCF","LEXUS RX3003","LEXUS RX400H","LEXUS RX450H","LEY MINI","LEY NA","LRO DISCOV","LROV DEFE98","LROV DISC98","LROV DISCO4","LROV DSPORT","LROV FREEL","LROV FREEL2","LROV R/ROVE","LROV RANGE","LROV RR","LROV RROVER","LROV RRSPRT","LROV TDV8","LROV V6","LROV V6 SE","MASER GRANT","MAZDA 2-MAXX","MAZDA 2 NEOS","MAZDA 2006","MAZDA 2A","MAZDA 2B","MAZDA 2MAXX","MAZDA 2NEO","MAZDA 3 DSL","MAZDA 3 SP23","MAZDA 3 SPOR","MAZDA 300","MAZDA 323AST","MAZDA 323M94","MAZDA 323P P","MAZDA 323PRO","MAZDA 323SPZ","MAZDA 3A03B","MAZDA 3A06B","MAZDA 3B","MAZDA 3BK","MAZDA 523","MAZDA 6 CLAS","MAZDA 6 SPOR","MAZDA 6 SPRT","MAZDA 600","MAZDA 6A06","MAZDA 6SERIE","MAZDA 808","MAZDA 9 FWD","MAZDA AST","MAZDA ASTIN","MAZDA B200","MAZDA B2200","MAZDA B25M","MAZDA B26091","MAZDA B3000","MAZDA B3200","MAZDA CX-5B","MAZDA CX-907","MAZDA CX3 ST","MAZDA CX5 MS","MAZDA CX8","MAZDA E2000","MAZDA M3 NEO","MAZDA MAX SP","MAZDA MAZD6","MAZDA SEDAN","MAZDA SP23","MAZDA TRIB01","MCL MP412C","MER GLE63","MERCB 16301A","MERCB 20294A","MERCB 20303C","MERCB 205","MERCB 21001A","MERCB 21098B","MERCB 21102A","MERCB 230E","MERCB 240","MERCB 28073A","MERCB 300CE","MERCB 4 DOOR","MERCB 420SEL","MERCB A160A","MERCB A160L","MERCB A170","MERCB A200","MERCB ACLASS","MERCB B200T","MERCB BCLASS","MERCB C180ES","MERCB C180KC","MERCB C180SA","MERCB C200C","MERCB C200KC","MERCB C200KE","MERCB C240","MERCB C280","MERCB C320","MERCB CL180K","MERCB CL230","MERCB CLA240","MERCB CLA280","MERCB CLA45","MERCB CLK350","MERCB CLK63","MERCB CLS350","MERCB COUPE","MERCB E200K","MERCB E220T","MERCB E230E","MERCB E240C","MERCB E320CL","MERCB E320TE","MERCB E350T","MERCB E55","MERCB E63S","MERCB GL350","MERCB GLA180","MERCB GLA200","MERCB GLC250","MERCB GLE250","MERCB GLE43","MERCB ML270D","MERCB ML280","MERCB ML350L","MERCB R320","MERCB R350","MERCB S350","MERCB S430","MERCB SL500","MERCB SLK","MERCB SLK280","MERCB SLK350","MERCB SMART","MERCB V250","MERCB VIANO","MERCED 211","MERCED C200CG","MG TOURER","MITSUB 00677","MITSUB 380 SX","MITSUB ADVANC","MITSUB CANTE","MITSUB CE MIR","MITSUB CHAL98","MITSUB DELICA","MITSUB ECLIPS","MITSUB EXPRE","MITSUB FTO","MITSUB GRANDI","MITSUB LANC06","MITSUB LANC92","MITSUB LANC96","MITSUB MAGNAS","MITSUB MIRAG","MITSUB MIRRAG","MITSUB ML","MITSUB NS","MITSUB NT","MITSUB PAJER","MITSUB PB","MITSUB SIGMA","MITSUB T/K00A","MITSUB T/K98A","MITSUB TKMA97","MITSUB TR","MITSUB TR4041","MITSUB TRIT99","MITSUB TRITAN","MITSUB TW MAG","MITSUB UTE","MITSUB VERA91","NISSAN 200 SX","NISSAN 720","NISSAN ALTIMA","NISSAN B'BIRD","NISSAN B/bird","NISSAN BBIRD","NISSAN BLUEBI","NISSAN CUBE","NISSAN D2195C","NISSAN D2297B","NISSAN DC UTE","NISSAN DUALI","NISSAN JN1BBA","NISSAN JUKE","NISSAN LEAF","NISSAN MAXI","NISSAN N15 PU","NISSAN N16 PU","NISSAN NARAVA","NISSAN NAV","NISSAN NAVARO","NISSAN NP300","NISSAN NXCOUP","NISSAN NXR","NISSAN PAJERO","NISSAN PATRO","NISSAN Patrol","NISSAN PFINDR","NISSAN PIN","NISSAN PULS93","NISSAN S LINE","NISSAN SERENA","NISSAN SKYL87","NISSAN SKYLI","NISSAN SYLVIA","NISSAN T3003A","NISSAN TIID06","NISSAN VEC","NISSAN XTRAI","NISSAN Z33","OPEL SL","PEUG 206 XT","PEUG 20601A","PEUG 207CC","PEUG 207GTI","PEUG 3008","PEUG 306XSI","PEUG 307CC","PEUG 307XSR","PEUG 405","PEUG 405ST","PEUG 406","PEUG 406ST","PEUG 407ST","PEUG 5008","PEUG NA","PORSCH 911 CA","PORSCH BOXSTE","PORSCH CAYEN","PORSCH CAYEN2","PORSCH NA","PORSCH PANA09","PROTON GT1","PROTON WAJA","PROTON WIRA","REN CAPTUR","REN FLUENC","REN KANGOO","REN LATITU","REN MIGUAN","ROLLS SILVER","ROLLS WRAITH","ROVER 75SE","ROVER DISCOV","ROVER KLUGER","ROVER NA","ROVER VOGUE","RROV EVOKE","RROV VOGUE","SAAB 9-302B","SAAB 900","SAAB 900086","SAAB 90094C","SAAB 900CS","SAAB 900I4","SAAB 900s","SAAB 900S","SAAB 900T","SAAB 93 VEC","SAAB 93S","SAAB 95AERO","SAAB 95SE","SAAB LINEAR","SAAB S90090","SKODA FABIA","SKODA OCTAVI","SKODA ROOMST","SKODA YETI","SMART W454","SSANGY REXTON","SSANGY STAVIC","STHN OUTBAC","SUBARU 00078","SUBARU 2013","SUBARU B300B","SUBARU B301B","SUBARU BRZ","SUBARU FORE04","SUBARU FORES","SUBARU FORRES","SUBARU FRSTER","SUBARU G-2","SUBARU G200A","SUBARU HERITA","SUBARU LBIRTY","SUBARU LIB","SUBARU LIBER","SUBARU LIBERY","SUBARU LIBRTY","SUBARU MVR","SUBARU S97A","SUBARU WAGO90","SUZUKI BALE96","SUZUKI EZ","SUZUKI EZ SWI","SUZUKI FZ","SUZUKI GRAN98","SUZUKI JIMNY","SUZUKI RT","SUZUKI STOCK","SUZUKI SWFT","TOYOTA 00001","TOYOTA 00768","TOYOTA 00989","TOYOTA 1019","TOYOTA 4 RUN","TOYOTA AVAL0N","TOYOTA AVALO","TOYOTA CAMR06","TOYOTA CAMR92","TOYOTA CAMR98","TOYOTA Camry","TOYOTA CARM","TOYOTA CELI94","TOYOTA CELSIO","TOYOTA CHASER","TOYOTA COMMUT","TOYOTA CORO","TOYOTA CORO01","TOYOTA CORO98","TOYOTA CORRLA","TOYOTA CRESS","TOYOTA CRESSD","TOYOTA CROWN","TOYOTA CRUISE","TOYOTA DYNA","TOYOTA Echo","TOYOTA FJ CRU","TOYOTA FJCRUS","TOYOTA GLX","TOYOTA GSR P/","TOYOTA HACE","TOYOTA HARRI","TOYOTA HILU","TOYOTA HILU05","TOYOTA HILU97","TOYOTA HILY92","TOYOTA IX35","TOYOTA L'CRUI","TOYOTA L CRUS","TOYOTA L/CRUS","TOYOTA LC 70","TOYOTA LC CRU","TOYOTA LC100","TOYOTA LC78","TOYOTA LEXC93","TOYOTA LITE","TOYOTA LITEAC","TOYOTA LN106R","TOYOTA MX83","TOYOTA PRIUSV","TOYOTA RAV400","TOYOTA RAV412","TOYOTA SEC","TOYOTA SEDAN","TOYOTA SOAR88","TOYOTA SOARER","TOYOTA SPRINT","TOYOTA STARLT","TOYOTA SURF","TOYOTA SV20","TOYOTA TARA92","TOYOTA TARAG","TOYOTA TORAGO","TOYOTA TROOPY","TOYOTA UNK","TOYOTA UNKNOW","TOYOTA VEINTA","UNK 4WD","UNK UNKNOW","UNKN 116I","UNKN 156","UNKN 318I","UNKN 325CI","UNKN 325I","UNKN 330","UNKN 4X4","UNKN 530I","UNKN 735I","UNKN A180","UNKN C250","UNKN C63","UNKN CAMRY","UNKN COROLL","UNKN DISCOV","UNKN FALCON","UNKN GLE43","UNKN HATCH","UNKN HILUX","UNKN I40","UNKN IMAX","UNKN IX35","UNKN KNOWN","UNKN M235I","UNKN MAZDA","UNKN ML350","UNKN N/A","UNKN N/K","UNKN RB2","UNKN SANTAF","UNKN SPRINT","UNKN SUV","UNKN TAXI","UNKN TOYOTA","UNKN TRITON","UNKN WAGON","UNKN WHITE","UNKN X1 25I","UNKN X3","VLK GOLF","VLK PASSAT","VOLKS GOLF02","VOLKS GOLF05","VOLKS GOLFR","VOLKS KOMBI","VOLKS PIASST","VOLKS POLO 2","VOLKS TOUA03","VOLKS TYPE 9","VOLKS UP","VOLKS VGAB01","VOLKSW TYPE A","VOLVO 240","VOLVO 240GL","VOLVO 245A","VOLVO 440GLT","VOLVO 850SE","VOLVO 90095A","VOLVO 960S91","VOLVO C30T5","VOLVO CROSS","VOLVO S4096A","VOLVO S40T","VOLVO S40T S","VOLVO S70T","VOLVO UNKNOW","VOLVO V60","VOLVO V7024","WILLYS NA"],"Car":[976,733,622,593,571,242,236,229,225,223,158,157,156,141,135,130,128,116,110,105,103,103,102,101,98,95,95,94,92,88,86,80,80,79,78,71,71,67,65,64,63,63,63,62,62,62,62,62,61,61,57,56,54,53,52,51,49,47,46,45,44,43,42,41,41,40,40,39,37,36,36,35,33,33,33,32,32,32,31,31,"NA",30,30,30,29,29,29,28,27,27,27,26,26,26,26,26,25,25,25,25,25,25,"NA",24,24,23,23,"NA",23,23,22,22,22,"NA",21,"NA",21,20,20,20,19,19,19,19,19,"NA",18,18,18,18,18,17,17,17,16,16,16,16,16,15,"NA",15,14,14,14,14,14,13,"NA",13,13,13,13,13,12,12,12,12,12,12,12,12,"NA","NA",12,12,12,11,11,11,11,10,10,10,10,10,10,"NA",10,10,"NA",10,10,10,"NA",9,9,"NA",9,9,9,9,9,9,9,9,8,"NA",8,"NA",8,8,8,8,8,8,8,8,8,"NA",8,7,"NA",7,7,7,7,7,7,7,7,"NA",7,7,"NA",7,7,"NA","NA",7,"NA","NA","NA",7,7,6,6,6,6,6,"NA",6,"NA","NA",6,"NA",6,6,6,6,"NA","NA","NA",6,"NA",6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,"NA","NA",5,"NA",5,5,5,5,5,5,"NA","NA","NA",5,5,5,5,5,5,5,5,5,"NA","NA","NA","NA",5,5,"NA",4,4,4,4,"NA",4,4,4,"NA",4,4,4,4,"NA",4,"NA",4,4,4,4,4,4,4,4,4,4,4,4,"NA","NA","NA",4,4,4,4,4,4,4,4,4,4,4,4,4,4,"NA","NA",4,4,4,"NA",3,3,3,"NA","NA",3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,"NA",3,"NA",3,"NA",3,3,3,3,3,3,3,3,3,3,3,3,3,"NA",3,3,3,3,3,3,"NA",3,3,3,3,3,3,3,3,3,3,3,"NA",3,3,3,3,3,"NA",3,3,3,3,3,3,3,3,"NA","NA",3,3,3,3,3,3,3,"NA","NA","NA",3,"NA",3,3,3,3,"NA","NA",3,"NA",3,3,3,"NA",2,2,2,"NA",2,2,2,2,2,2,2,2,2,2,2,2,2,"NA","NA","NA","NA","NA",2,2,2,2,"NA",2,2,2,"NA",2,2,2,2,2,2,2,2,2,2,"NA","NA",2,2,"NA","NA",2,"NA","NA",2,"NA",2,"NA",2,2,2,"NA",2,2,"NA",2,2,"NA",2,2,2,2,2,"NA",2,2,2,2,2,2,2,2,2,2,2,"NA",2,"NA",2,"NA",2,"NA","NA",2,2,"NA",2,2,2,"NA","NA","NA","NA",2,2,2,2,2,2,"NA","NA","NA",2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,"NA","NA","NA","NA","NA",2,2,2,2,2,2,2,"NA",2,"NA",2,2,2,2,"NA","NA","NA","NA",2,"NA",2,"NA",2,2,2,2,2,2,2,"NA",2,2,"NA","NA",2,2,2,"NA","NA",2,2,2,2,"NA",2,"NA","NA",2,"NA","NA","NA",2,"NA",2,2,2,"NA",2,2,2,2,2,2,2,2,"NA",2,"NA","NA",2,"NA","NA",2,2,"NA",2,"NA",2,2,2,2,"NA",2,"NA",2,2,"NA","NA",2,2,2,2,2,"NA",1,"NA",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"NA","NA","NA","NA",1,1,1,"NA",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"NA",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"NA",1,1,1,1,"NA","NA","NA","NA","NA","NA",1,1,1,"NA",1,1,"NA","NA","NA",1,1,1,"NA","NA",1,"NA","NA","NA",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"NA",1,"NA","NA",1,1,1,1,1,1,1,1,1,1,1,"NA","NA","NA","NA",1,1,1,"NA","NA",1,1,1,1,"NA",1,"NA","NA",1,1,"NA",1,1,1,1,1,"NA",1,"NA","NA","NA",1,1,1,1,1,"NA",1,"NA",1,1,1,1,"NA",1,1,1,1,1,"NA","NA",1,1,1,"NA",1,1,1,"NA",1,1,1,1,1,1,1,1,1,"NA",1,1,1,1,"NA",1,"NA","NA",1,1,1,"NA",1,"NA",1,"NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,1,1,1,1,1,"NA","NA",1,1,1,1,1,1,1,"NA","NA","NA","NA",1,1,1,1,"NA",1,1,1,1,1,"NA","NA",1,1,1,1,"NA","NA",1,"NA","NA","NA","NA","NA",1,1,"NA","NA",1,"NA",1,"NA",1,1,"NA",1,1,"NA",1,1,1,1,"NA",1,1,1,1,1,"NA","NA",1,1,1,"NA",1,1,1,1,1,1,1,"NA",1,1,1,"NA",1,1,"NA",1,1,1,"NA",1,"NA","NA",1,1,1,1,"NA","NA",1,1,1,1,1,1,1,1,1,"NA","NA",1,"NA",1,1,1,1,1,1,"NA","NA","NA",1,1,1,1,"NA",1,1,1,"NA",1,1,1,1,1,1,1,1,1,1,"NA",1,1,1,"NA",1,1,1,1,1,"NA","NA","NA","NA","NA",1,1,1,1,1,1,1,1,1,"NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,1,1,1,"NA",1,"NA",1,1,1,1,1,1,1,1,1,1,"NA","NA",1,"NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"NA",1,1,1,1,1,"NA",1,1,"NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA",1,1,1,1,1,"NA",1,"NA","NA",1,1,1,1,"NA",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"NA",1,1,1,1,1,1,1,"NA","NA","NA","NA","NA",1,"NA","NA","NA",1,"NA",1,1,1,1,1,1,1,"NA","NA",1,1,1,"NA",1,1,"NA",1,"NA","NA",1,1,1,"NA",1,1,1,1,1,1,"NA","NA","NA","NA","NA","NA",1,1,1,1,1,"NA","NA",1,"NA","NA",1,"NA",1,1,"NA",1,1,1,"NA","NA","NA","NA",1,1,1,1,1,1,"NA","NA","NA","NA",1,1,"NA","NA","NA","NA",1,1,1,"NA",1,1,1,"NA",1,1,"NA",1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"NA",1,1,1,"NA",1,1,1,1,1,1,1,1,"NA",1,1,1,1,1,"NA","NA",1,"NA","NA","NA",1,1,1,1,1,1,1,1,1,1,1,"NA",1,1,1,1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA",1,1,1,"NA",1,1,1,1,"NA","NA","NA",1,1,1,"NA","NA",1,"NA","NA",1,"NA","NA","NA","NA","NA",1,1,1,"NA",1,1,1,1,1,1,"NA",1,1,1,1,1,1,1,"NA","NA",1,"NA",1,"NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,1,"NA","NA",1,1,1,1,1,1,"NA",1,"NA","NA","NA","NA","NA",1,1,"NA",1,1,1,1,1,1,1,1,1,1,1,1,1,"NA",1,"NA",1,1,1,1,"NA",1,"NA",1,1,1,"NA",1,1,1,"NA",1,1,1,1,"NA","NA",1,"NA","NA",1,1,1,1,1,1,1,1,"NA",1,1,1,1,"NA","NA","NA",1,"NA",1,1,1,"NA",1,1,1,1,"NA","NA","NA",1],"Station Wagon":["NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",30,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",24,"NA","NA","NA","NA",23,"NA","NA","NA","NA","NA","NA","NA",21,"NA","NA","NA","NA","NA","NA","NA","NA","NA",18,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",13,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",12,12,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",10,"NA","NA","NA","NA","NA","NA",9,"NA","NA",9,"NA","NA","NA","NA","NA","NA","NA","NA","NA",8,"NA",8,"NA","NA","NA","NA","NA","NA","NA","NA","NA",8,"NA","NA",7,"NA","NA","NA","NA","NA","NA","NA","NA",7,"NA","NA",7,"NA","NA",7,7,"NA",7,7,7,"NA","NA","NA","NA","NA","NA","NA",6,"NA","NA",6,"NA",6,"NA","NA","NA","NA",6,6,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",5,"NA","NA","NA","NA","NA","NA",5,5,5,"NA","NA","NA","NA","NA","NA","NA","NA","NA",5,5,5,"NA","NA","NA",5,"NA","NA","NA","NA",4,"NA","NA","NA",4,"NA","NA","NA","NA",4,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",4,4,4,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",4,4,"NA","NA","NA",4,"NA","NA","NA",3,3,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",3,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",3,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",3,"NA","NA","NA","NA","NA",3,"NA","NA","NA","NA","NA","NA","NA","NA",3,3,"NA","NA","NA","NA","NA","NA","NA",3,3,3,"NA",3,"NA","NA","NA","NA",3,"NA","NA",3,"NA","NA","NA",3,"NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,2,2,2,2,"NA","NA","NA","NA",2,"NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,"NA","NA",2,2,"NA",2,"NA","NA","NA","NA",2,"NA","NA","NA",2,"NA","NA",2,"NA","NA",2,"NA","NA","NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,"NA",2,"NA",2,"NA",2,2,"NA","NA",2,"NA","NA","NA",2,2,2,2,"NA","NA","NA","NA","NA","NA","NA",2,2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,2,2,2,2,"NA","NA","NA","NA","NA","NA","NA",2,"NA",2,"NA","NA","NA","NA",2,2,2,2,"NA",2,"NA",2,"NA","NA","NA","NA","NA","NA","NA",2,"NA","NA",2,"NA","NA","NA","NA",2,2,"NA","NA","NA","NA",2,"NA",2,2,"NA",2,2,2,"NA",2,"NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA",2,"NA","NA",2,"NA",2,2,"NA","NA",2,"NA",2,"NA","NA","NA","NA",2,"NA","NA","NA","NA",2,2,"NA","NA","NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,1,1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA",1,1,1,1,1,1,"NA","NA","NA",1,"NA","NA","NA","NA",1,"NA","NA","NA",1,1,"NA",1,1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,1,1,"NA","NA","NA",1,1,"NA","NA","NA","NA",1,"NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,1,"NA","NA","NA",1,"NA",1,"NA","NA","NA","NA","NA","NA",1,"NA","NA",1,"NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA",1,"NA","NA","NA",1,"NA","NA",1,1,"NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,"NA",1,"NA","NA","NA","NA","NA","NA",1,1,1,"NA","NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA","NA","NA",1,1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,"NA",1,1,1,1,1,1,1,1,1,1,"NA",1,"NA","NA","NA","NA",1,"NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,"NA",1,1,1,"NA","NA",1,"NA",1,1,1,1,1,1,1,1,1,1,1,1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,1,1,1,"NA","NA","NA","NA","NA",1,"NA",1,1,"NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA",1,1,1,1,1,"NA",1,1,1,"NA",1,"NA","NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA",1,"NA","NA","NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA",1,1,1,1,1,"NA","NA","NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA",1,1,1,1,"NA","NA","NA",1,"NA","NA","NA",1,"NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA",1,1,"NA",1,1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA",1,1,1,"NA",1,1,1,1,1,1,"NA","NA",1,1,1,1,"NA","NA","NA",1,"NA","NA","NA","NA","NA",1,1,"NA","NA","NA",1,1,"NA",1,"NA","NA",1,1,1,1,1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA",1,"NA","NA",1,"NA",1,"NA","NA",1,"NA","NA","NA","NA",1,1,1,"NA","NA","NA",1,"NA",1,1,"NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA",1,"NA",1,1,1,1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,"NA","NA","NA","NA",1,"NA",1,"NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA","NA","NA",1,"NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA",1,1,1,"NA",1,"NA","NA","NA",1,"NA","NA","NA","NA",1,1,1,"NA"],"Utility":["NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",21,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",15,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",10,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",6,"NA","NA","NA","NA","NA","NA","NA","NA","NA",6,"NA",6,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",5,5,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",5,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",4,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",3,"NA","NA","NA",3,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",3,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",3,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA",2,"NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",2,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA",1,"NA","NA","NA","NA","NA",1,"NA",1,1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA",1,1,"NA",1,1,"NA",1,1,"NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA",1,"NA","NA",1,1,1,"NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA",1,"NA","NA",1,"NA","NA","NA","NA",1,"NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,1,1,1,1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA",1,"NA","NA",1,"NA","NA","NA","NA","NA","NA",1,1,1,"NA","NA","NA","NA","NA","NA","NA",1,1,1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA",1,1,1,1,"NA","NA","NA",1,1,1,"NA",1,"NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA",1,"NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA","NA"]},"columns":[{"id":"Make_Model","name":"Make_Model","type":"character"},{"id":"Car","name":"Car","type":"numeric"},{"id":"Station Wagon","name":"Station Wagon","type":"numeric"},{"id":"Utility","name":"Utility","type":"numeric"}],"dataKey":"06947d40c5973b6c79d481143bd394f5"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p><strong>Exploring the data</strong></p>
+<p>Vehicle accidents involving pedestrians occur with vehicles labelled as cars more frequently. The number of crashes per vehicle type is outlined below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>inj_factor <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Not injured"</span>, <span class="st">"Other injury"</span>,<span class="st">"Serious injury"</span>,<span class="st">"Fatality"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>injury <span class="ot">&lt;-</span> p_recat <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Inj Level Desc</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">factor</span>(<span class="st">`</span><span class="at">Inj Level Desc</span><span class="st">`</span>, <span class="at">levels=</span>inj_factor)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Inj Level Desc</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span>, <span class="st">`</span><span class="at">Inj Level Desc</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span>, <span class="st">`</span><span class="at">Inj Level Desc</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>injury_tbl <span class="ot">&lt;-</span> injury <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">`</span><span class="at">Inj Level Desc</span><span class="st">`</span>, <span class="at">values_from =</span> n) <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sum =</span> <span class="fu">sum</span>(<span class="fu">c_across</span>(<span class="fu">where</span>(is.numeric)), <span class="at">na.rm =</span> T)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sum))</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>injury_tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 6
+  `Vehicle Type Desc` `Not injured` `Other injury` Serious injur…¹ Fatal…²   sum
+  &lt;chr&gt;                       &lt;int&gt;          &lt;int&gt;           &lt;int&gt;   &lt;int&gt; &lt;int&gt;
+1 Car                           240           7225            5290     298 13053
+2 Station Wagon                  14            412             305      25   756
+3 Utility                         6             92              83       4   185
+# … with abbreviated variable names ¹​`Serious injury`, ²​Fatality</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>injury_bar <span class="ot">&lt;-</span> injury <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span>, <span class="at">y =</span> n, <span class="at">fill =</span> <span class="st">`</span><span class="at">Inj Level Desc</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"proportion"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plotly<span class="sc">::</span><span class="fu">ggplotly</span>(injury_bar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-2355428091475018ca1d" style="width:100%;height:464px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2355428091475018ca1d">{"x":{"data":[{"orientation":"v","width":[0.9,0.9,0.9],"base":[0.981613422201793,0.981481481481482,0.967567567567568],"x":[1,2,3],"y":[0.0183865777982073,0.0185185185185185,0.0324324324324324],"text":["Vehicle Type Desc: Car<br />n:  240<br />Inj Level Desc: Not injured","Vehicle Type Desc: Station Wagon<br />n:   14<br />Inj Level Desc: Not injured","Vehicle Type Desc: Utility<br />n:    6<br />Inj Level Desc: Not injured"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Not injured","legendgroup":"Not injured","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9],"base":[0.428100819734927,0.436507936507937,0.47027027027027],"x":[1,2,3],"y":[0.553512602466866,0.544973544973545,0.497297297297297],"text":["Vehicle Type Desc: Car<br />n: 7225<br />Inj Level Desc: Other injury","Vehicle Type Desc: Station Wagon<br />n:  412<br />Inj Level Desc: Other injury","Vehicle Type Desc: Utility<br />n:   92<br />Inj Level Desc: Other injury"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(124,174,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Other injury","legendgroup":"Other injury","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9],"base":[0.0228300007661074,0.0330687830687831,0.0216216216216216],"x":[1,2,3],"y":[0.405270818968819,0.403439153439153,0.448648648648649],"text":["Vehicle Type Desc: Car<br />n: 5290<br />Inj Level Desc: Serious injury","Vehicle Type Desc: Station Wagon<br />n:  305<br />Inj Level Desc: Serious injury","Vehicle Type Desc: Utility<br />n:   83<br />Inj Level Desc: Serious injury"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Serious injury","legendgroup":"Serious injury","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9],"base":[0,0,0],"x":[1,2,3],"y":[0.0228300007661074,0.0330687830687831,0.0216216216216216],"text":["Vehicle Type Desc: Car<br />n:  298<br />Inj Level Desc: Fatality","Vehicle Type Desc: Station Wagon<br />n:   25<br />Inj Level Desc: Fatality","Vehicle Type Desc: Utility<br />n:    4<br />Inj Level Desc: Fatality"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(199,124,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Fatality","legendgroup":"Fatality","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,3.6],"tickmode":"array","ticktext":["Car","Station Wagon","Utility"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["Car","Station Wagon","Utility"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Vehicle Type Desc","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"proportion","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Inj Level Desc","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"176c7aa049a6":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"176c7aa049a6","visdat":{"176c7aa049a6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Linear regression estimating the effect of vehicle types, vehicle manufacture year &amp; speed limit on pedestrian fatalities:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model_df <span class="ot">&lt;-</span> p_recat <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ACCIDENT_NO, VEHICLE_MAKE, VEHICLE_MODEL, Make_Model, <span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         VEHICLE_BODY_STYLE ,<span class="st">`</span><span class="at">Inj Level Desc</span><span class="st">`</span>, INJ_LEVEL, TARE_WEIGHT, SPEED_ZONE,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Light Condition Desc</span><span class="st">`</span>, VEHICLE_YEAR_MANUF) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">is_station_wagon =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span> <span class="sc">==</span> <span class="st">'Station Wagon'</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">is_utility =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span> <span class="sc">==</span> <span class="st">'Utility'</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">is_car =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span> <span class="sc">==</span> <span class="st">'Car'</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">is_fatal =</span> <span class="fu">ifelse</span>(INJ_LEVEL <span class="sc">==</span> <span class="dv">1</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">is_serious_injury =</span> <span class="fu">ifelse</span>(INJ_LEVEL <span class="sc">==</span> <span class="dv">2</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking Station Wagon Categorisation</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>model_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span> <span class="sc">==</span> <span class="st">'Station Wagon'</span>) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Make_Model) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 342 × 2
+   Make_Model        n
+   &lt;chr&gt;         &lt;int&gt;
+ 1 BMW X5           30
+ 2 KIA CARNIV       24
+ 3 HONDA CR-V       23
+ 4 LROV DISCOV      21
+ 5 FORD ESCAPE      18
+ 6 JEEP WRANGL      13
+ 7 JEEP GRDCHK      12
+ 8 LEXUS RX350      12
+ 9 JEEP PATRIO      10
+10 DAIHAT TERIOS     9
+# … with 332 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lm_fatal <span class="ot">&lt;-</span> <span class="fu">lm</span>(is_fatal <span class="sc">~</span> <span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span> <span class="sc">+</span> SPEED_ZONE, <span class="at">data =</span> model_df)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_fatal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = is_fatal ~ `Vehicle Type Desc` + SPEED_ZONE, data = model_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.05824 -0.03154 -0.01708 -0.01708  1.01184 
+
+Coefficients:
+                                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                      -0.0552147  0.0087942  -6.279 3.52e-10 ***
+`Vehicle Type Desc`Station Wagon  0.0122435  0.0056395   2.171   0.0299 *  
+`Vehicle Type Desc`Utility       -0.0008477  0.0111534  -0.076   0.9394    
+SPEED_ZONE                        0.0014458  0.0001611   8.976  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1506 on 13990 degrees of freedom
+  (22 observations deleted due to missingness)
+Multiple R-squared:  0.005961,  Adjusted R-squared:  0.005748 
+F-statistic: 27.96 on 3 and 13990 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Linear regression estimating the effect of vehicle types, vehicle manufacture year &amp; speed limit on pedestrian serious injuries:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>lm_serious <span class="ot">&lt;-</span> <span class="fu">lm</span>(is_serious_injury <span class="sc">~</span> <span class="st">`</span><span class="at">Vehicle Type Desc</span><span class="st">`</span> <span class="sc">+</span> SPEED_ZONE, <span class="at">data =</span> model_df)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_serious)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = is_serious_injury ~ `Vehicle Type Desc` + SPEED_ZONE, 
+    data = model_df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.5363 -0.4377 -0.3838  0.5623  0.7239 
+
+Coefficients:
+                                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                      0.1145696  0.0285615   4.011 6.07e-05 ***
+`Vehicle Type Desc`Station Wagon 0.0056356  0.0183156   0.308    0.758    
+`Vehicle Type Desc`Utility       0.0447211  0.0362232   1.235    0.217    
+SPEED_ZONE                       0.0053854  0.0005231  10.294  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4892 on 13990 degrees of freedom
+  (22 observations deleted due to missingness)
+Multiple R-squared:  0.00762,   Adjusted R-squared:  0.007408 
+F-statistic: 35.81 on 3 and 13990 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p><strong>Findings</strong></p>
+<p><u>Pedestrian fatalities:</u></p>
+<p>The linear regression estimates that station wagons have a statistically significant effect (p &lt; 0.05) in pedestrian fatalities. The linear model estimates that station wagons add an additional 1.12% risk of fatality to pedestrians compared to the cars. The effect of utility vehicles is not significant, thus it is inconclusive whether utility vehicles have any effect of pedestrian fatalities compared to cars.</p>
+<p>To see the make and models of station wagons/utility vehicles, please refer to the make and model table above in which you are able to sort for station wagons/utility vehicle by clicking on the column headers.</p>
+<p>The model also estimates a positive significant effect of the speed zone (speed limit) and vehicle manufactured date on fatalities.</p>
+<p><u>Pedestrian serious injuries:</u></p>
+<p>The linear regression estimates that both station wagons and utility vehicles have no significant effect on pedestrians in crashes where the pedestrian is considered seriously injured.</p>
+<p>Similarly to the fatality model, this model also estimates significant positive effects on the speed zone and vehicle manufactured date on fatalities.</p>
+<p><strong>Summary</strong></p>
+<p>The linear model estimates station wagons increase the risk of fatality by 1.12% compared to cars, which may seem small, however when we see the shift towards SUVs and larger vehicles in Australia, it may result in more pedestrian deaths.</p>
+<p>The date currently has cars outweighing station wagons in the number of accidents involving pedestrians (Note: The vehicles listed in the data as station wagon are mainly SUVs - see Make Model table). However we may see this shift to station wagons being more frequently involved in pedestrian accidents.</p>
+<p>Could the shift in consumer demand towards larger vehicles sacrifice pedestrian safety for driver/passenger safety in Victoria?</p>
+<p>Key Constraint:</p>
+<p>Vehicle descriptions are reliant on data inputted in the individual crash report. This may mean vehicles descriptions may vary across different reports and also vehicle descriptions evolve over time due to shifts in the car industry (e.g.&nbsp;Station Wagons in the 2000s may refer to cars more like the Holden Commodore Wagon, where as in the 2010s it may refer to cars more like Toyota RAV 4).<br>
+This constraint is addressed by categorising vehicles based on the frequency of their label per make and model.</p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
