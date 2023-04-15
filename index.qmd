@@ -111,7 +111,7 @@ plotly::ggplotly(injury_bar)
 
 ```
 
-Linear regression estimating the effect of vehicle types, vehicle manufacture year & speed limit on pedestrian fatalities:
+Linear regression estimating the effect of vehicle types & speed limit on pedestrian fatalities:
 
 ```{r error=FALSE, warning=FALSE, message=FALSE}
 model_df <- p_recat %>%
@@ -132,7 +132,7 @@ summary(lm_fatal)
 
 ```
 
-Linear regression estimating the effect of vehicle types, vehicle manufacture year & speed limit on pedestrian serious injuries:
+Linear regression estimating the effect of vehicle types & speed limit on pedestrian serious injuries:
 
 ```{r error=FALSE, warning=FALSE, message=FALSE}
 lm_serious <- lm(is_serious_injury ~ `Vehicle Type Desc` + SPEED_ZONE, data = model_df)
@@ -147,13 +147,13 @@ The linear regression estimates that station wagons have a statistically signifi
 
 To see the make and models of station wagons/utility vehicles, please refer to the make and model table above in which you are able to sort for station wagons/utility vehicle by clicking on the column headers.
 
-The model also estimates a positive significant effect of the speed zone (speed limit) and vehicle manufactured date on fatalities.
+The model also estimates a positive significant effect of the speed zone (speed limit) on fatalities.
 
 [Pedestrian serious injuries:]{.underline}
 
 The linear regression estimates that both station wagons and utility vehicles have no significant effect on pedestrians in crashes where the pedestrian is considered seriously injured.
 
-Similarly to the fatality model, this model also estimates significant positive effects on the speed zone and vehicle manufactured date on fatalities.
+Similarly to the fatality model, this model also estimates significant positive effects on the speed zone on fatalities.
 
 **Summary**
 
