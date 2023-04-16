@@ -152,9 +152,9 @@ Similarly to the fatality model, this model also estimates significant positive 
 
 **Summary**
 
-The linear model estimates utility vehicles increase the risk of fatality by 1.66% compared to cars, which may seem small, however when we see the shift towards larger vehicles in Australia (the top 3 best selling cars are utility vehicles), it may result in more pedestrian deaths.
+The linear model estimates utility vehicles increase the risk of fatality by 1.66% compared to other vehicles observed, which may seem small, however when we see the shift towards larger vehicles in Australia (the top 3 best selling vehicles are utility vehicles), it may result in more pedestrian deaths.
 
-The date currently has cars outweighing utility vehicles & station wagons in the number of accidents involving pedestrians. However we may see this shift to larger vehicles being more frequently involved in pedestrian accidents.
+The data currently has cars outweighing utility vehicles & station wagons in the number of accidents involving pedestrians. However we may see this shift to larger vehicles being more frequently involved in pedestrian accidents.
 
 Could the shift in consumer demand towards larger vehicles sacrifice pedestrian safety for driver/passenger safety in Victoria?
 
